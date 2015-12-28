@@ -1,5 +1,5 @@
 require 'uri'
-require 'rest-client'
+require 'httmultiparty'
 require "cloud_convert/exceptions"
 
 require "cloud_convert/version"

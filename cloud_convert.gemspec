@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "sinatra", "~> 1.4.3"
   spec.add_development_dependency "rake-notes"
 
-  spec.add_dependency "rest-client", "~> 2.0.0.rc2"
+  spec.add_dependency "httmultiparty", "~> 0.3.16"
 end

@@ -98,7 +98,7 @@ module CloudConvert
         puts "====== IS it multy: #{opts[:multi]}"
         opts[:params] ||= {}
         request = (opts[:multi] ? opts[:params] : opts[:params])
-        response = RestClient.send(opts[:http_method], opts[:url], request)
+        response = HTTMultiParty.send(opts[:http_method], opts[:url], request)
         yield(response) if block_given? and response.response.code == "200"
         return response
     end
