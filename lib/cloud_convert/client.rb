@@ -5,14 +5,15 @@
 
 module CloudConvert
   class Client
-
-    attr_reader :api_key, :processes
+    include HTTMultiParty
+    attr_reader :api_key, :processes, :return_type
 
     def initialize(args = {})
       @api_key = args[:api_key]
       args[:processes].nil? ?
         @processes = [] :
         @processes = args[:processes]
+      @return_type = args[:return_type] || :json
     end
 
     def build_process(opts = {})

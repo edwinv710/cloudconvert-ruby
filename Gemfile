@@ -5,3 +5,4 @@ gemspec
 
 
 gem "httparty", "~> 0.13.7"
+gem 'simplecov', :require => false, :group => :test

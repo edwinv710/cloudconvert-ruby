@@ -1,5 +1,7 @@
-require 'uri'
+require 'open-uri'
+require 'tempfile'
 require 'httmultiparty'
+require 'net/http/post/multipart'
 require "cloud_convert/exceptions"
 
 require "cloud_convert/version"

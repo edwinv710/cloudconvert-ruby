@@ -18,7 +18,7 @@ class FakeCloudConvert < Sinatra::Base
     # puts "===3==3==3 #{params[:outputformat]}"
     # puts "==== #{params.inspect}"
     # puts "=============================="
-    if params[:input]  and params[:outputformat]
+    if params[:input] and params[:file] and params[:outputformat]
       json_response 200, 'post_conversion.json'
     else
       json_response 400
@@ -27,6 +27,11 @@ class FakeCloudConvert < Sinatra::Base
 
   delete '/process/:process_id' do
      json_response 200, 'delete_process.json'
+  end
+
+  get '/process/12345' do
+    puts "------ I am in the 12345 section."
+     json_response 200, 'get_conversion2.json'
   end
 
   get '/process/:process_id' do
@@ -52,7 +57,7 @@ class FakeCloudConvert < Sinatra::Base
   def json_response(response_code, file_name = nil)
     content_type :json
     status response_code
-    return {} if file_name.nil?
+    return { "code" => "400"}.to_json if file_name.nil?
     File.open(File.dirname(__FILE__) + '/fixtures/' + file_name, 'rb').read
   end
 
