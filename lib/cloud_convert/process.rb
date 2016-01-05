@@ -1,6 +1,5 @@
-#FIXME status does not save in the initializer
-#TODO Integrate the steps from the api.
 require 'base64'
+require 'pathname'
 
 module CloudConvert
 
@@ -20,7 +19,7 @@ module CloudConvert
       @input_format = args[:input_format]
       @output_format = args[:output_format]
       @step = :awaiting_process_creation
-      @client = args[:client] || CloudConvert::Client.new(processes: [self], return_type: args[:return_type])
+      @client = args[:client]
     end
 
     def create
@@ -41,6 +40,7 @@ module CloudConvert
     end
 
     def convert(opts)
+        raise CloudConvert::InvalidStep if @step == :awaiting_process_creation
         url = process_url(include_process_id: true)
         multi = opts[:file].respond_to?("read")
         response = send_request(http_method: :post, 
@@ -63,27 +63,31 @@ module CloudConvert
         return convert_response response
     end
 
-    def download(path)    
-        response =  HTTMultiParty.get(download_url)
-        return convert_response response unless response.response.code == "200"
-        return File.open(path, "w") do |f| 
+    def download(path, file_name="")    
+        response =  HTTMultiParty.get(download_url(file_name))
+        return update_download_progress response unless response.response.code == "200"
+        file_name = response.response.header['content-disposition'][/filename=(\"?)(.+)\1/, 2] if file_name.strip.empty?
+        full_path = full_path(path, file_name)
+        return full_path.open("w") do |f| 
             f.binmode
             f.write response.parsed_response
+            full_path.to_s
         end
     end
 
     def delete
         url = construct_url(process_response[:subdomain], "process", process_response[:id])
         response = HTTMultiParty.delete(url)
+        @step = :deleted if response.response.code == "200"
         return convert_response response
     end
 
-    def list
-        url = construct_url("api", "processes")
-        response = send_request(http_method: :get, url: url, params: {apikey: client.api_key})
-        return convert_response response
-    end  
+    def download_url(file = "")
+        file = "/#{file}" unless file.nil? or file.strip.empty?
+        return "https://#{@process_response[:subdomain]}.cloudconvert.com/download/#{@process_response[:id]}#{file}"
+    end
 
+    
     private
 
     def send_request(opts)
@@ -92,9 +96,9 @@ module CloudConvert
         if opts[:multi]
             url = URI.parse(opts[:url])
             req = Net::HTTP::Post::Multipart.new url.path, opts[:params]
-            res = Net::HTTP.start(url.host, url.port) do |http|
-              http.request(req)
-            end
+            http = Net::HTTP.new(url.host, url.port) 
+            http.use_ssl = (url.scheme == "https")
+            res = http.request(req)
             request = HTTParty::Request.new(opts[:http_method], opts[:url], o = {})
             parsed_block = lambda { HTTParty::Parser.call(res. body, HTTParty::Parser.format_from_mimetype(res['content-type']))}
             response = HTTParty::Response.new(request, res, parsed_block)
@@ -102,7 +106,8 @@ module CloudConvert
             response = CloudConvert::Client.send(opts[:http_method], opts[:url], query: request)
         end
 
-        yield(response) if block_given? and response.response.code == "200"
+        yield(response) if block_given? and (response.response.code == "200" || 
+            (response.parsed_response.kind_of?(Hash) and response.parsed_response.key?("step")))
         return response
     end
 
@@ -122,10 +127,6 @@ module CloudConvert
         return self.instance_variable_set("@#{variable_symbol.to_s}", symbolized_response)
     end
 
-    def download_url
-        return "https://#{@process_response[:subdomain]}.cloudconvert.com/download/#{@process_response[:id]}"
-    end
-
     def extract_subdomain_from_url(url)
         return url.split(".")[0].tr('/','')
     end
@@ -134,11 +135,20 @@ module CloudConvert
         case @client.return_type
         when :response
             return response.response
-        when :httparty
-            return response
         else
-            return response.parsed_response.deep_symbolize
+            parsed_response = response.parsed_response.deep_symbolize
+            return parsed_response
         end
+    end
+
+    def full_path(dir, file_name)
+        return Pathname(dir).join(file_name)
+    end
+
+    def update_download_progress(response)
+        create_parsed_response(:status_response, response.parsed_response)
+        @step = @status_response[:step].to_sym
+        return convert_response response
     end
 
   end

@@ -1,9 +1,18 @@
 require 'test_helper'
+require 'vcr'
+
+VCR.configure do |config|
+  config.cassette_library_dir = "test/support/vcr_fixtures/vcr_cassettes"
+  config.hook_into :webmock 
+end
+
 
 class ClientTest < Minitest::Test
 
   def setup
     @client_without_processes = CloudConvert::Client.new(api_key: "api_key")
+    @client = CloudConvert::Client.new(api_key: "7mWZZkBjRqGN224WzW4P6sXha8ic7I37CRufh5DlY04ZPxlkgn8Cw1xXAliS0QGZg80kwZWe-A6P5r8ZNmlVKg")
+    @process = @client.build_process(input_format: "jpg", output_format: "pdf")
   end
 
   def test_that_it_stores_and_reads_the_correct_api_key
@@ -43,9 +52,23 @@ class ClientTest < Minitest::Test
     assert_includes @client_without_processes.processes, process_three
   end
 
-  def test_that_we_can_set_the_api_key
-    @client_without_processes.set_api_key("testing")
-    assert_equal "testing", @client_without_processes.api_key
+  def test_that_we_can_set_the_return_type
+    @client_without_processes.return_type = :request
+    assert_equal :request, @client_without_processes.return_type
   end
 
+  def test_that_list_returns_an_array_of_hashes
+    VCR.use_cassette("create_jpg_pdf_2") { @process.create }
+    VCR.use_cassette("convert_jpg_pdf_2") do
+      @conversion_response = @process.convert(
+        input: "download",
+        outputformat: "pdf", 
+        file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
+        download: "false"
+      )
+    end
+    VCR.use_cassette("list_conversions"){@list = @client.list}
+    assert_equal true, @list.kind_of?(Array)
+    @list.each { |list| assert_equal true, list.kind_of?(Hash) }
+  end
 end

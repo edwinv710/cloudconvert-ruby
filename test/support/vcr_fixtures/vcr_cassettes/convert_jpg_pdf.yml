@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://hostiorgjt.cloudconvert.com/process/kTb1w2vjWARFQKXrnYSu
+    body:
+      encoding: UTF-8
+      string: input=download&outputformat=pdf&file=http%3A%2F%2Fhdwallpaperslovely.com%2Fwp-content%2Fgallery%2Froyalty-free-images-free%2Froyalty-free-stock-images-raindrops-01.jpg&download=false
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - Express
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, PUT, POST, DELETE
+      Access-Control-Allow-Headers:
+      - Content-Type, Origin, User-Agent, Retry-After
+      Vary:
+      - X-HTTP-Method-Override
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '286'
+      Etag:
+      - W/"11e-GRnRtHe3WqWeaJCU1SKIGg"
+      Date:
+      - Mon, 04 Jan 2016 08:27:15 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"kTb1w2vjWARFQKXrnYSu","url":"//hostiorgjt.cloudconvert.com/process/kTb1w2vjWARFQKXrnYSu","percent":0,"message":"Preparing
+        process","step":"input","starttime":1451896035,"expire":1451897535,"input":{},"output":{"url":"//hostiorgjt.cloudconvert.com/download/kTb1w2vjWARFQKXrnYSu"}}'
+    http_version: 
+  recorded_at: Mon, 04 Jan 2016 08:26:26 GMT
+recorded_with: VCR 3.0.1

@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://hostiorgeu.cloudconvert.com/process/nx6iQLqbvts3XPOjydzZ
+    body:
+      encoding: UTF-8
+      string: input=download&outputformat=html&file=http%3A%2F%2Fwww.digilife.be%2Fquickreferences%2Fqrc%2Fruby%2520language%2520quickref.pdf&download=false&save=true&converteroptions[embed_css]=false&converteroptions[embed_javascript]=false
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Powered-By:
+      - Express
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, PUT, POST, DELETE
+      Access-Control-Allow-Headers:
+      - Content-Type, Origin, User-Agent, Retry-After
+      Vary:
+      - X-HTTP-Method-Override
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '298'
+      Etag:
+      - W/"12a-pJVhPsOzJTjPP8mQTnLpXg"
+      Date:
+      - Tue, 05 Jan 2016 06:26:42 GMT
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"nx6iQLqbvts3XPOjydzZ","url":"//hostiorgeu.cloudconvert.com/process/nx6iQLqbvts3XPOjydzZ","percent":0,"message":"Preparing
+        process","step":"input","starttime":1451975202,"expire":1451976522,"input":{},"output":{"url":"//hostiorgeu.cloudconvert.com/download/nx6iQLqbvts3XPOjydzZ","save":true}}'
+    http_version: 
+  recorded_at: Tue, 05 Jan 2016 06:24:37 GMT
+recorded_with: VCR 3.0.1

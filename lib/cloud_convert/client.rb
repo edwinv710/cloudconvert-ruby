@@ -6,7 +6,8 @@
 module CloudConvert
   class Client
     include HTTMultiParty
-    attr_reader :api_key, :processes, :return_type
+    attr_reader :api_key, :processes
+    attr_accessor :return_type
 
     def initialize(args = {})
       @api_key = args[:api_key]
@@ -23,8 +24,17 @@ module CloudConvert
       return process
     end
 
-    def set_api_key(api_key)
-      @api_key = api_key
+    def list
+        url = "#{CloudConvert::PROTOCOL}://api.#{CloudConvert::DOMAIN}/processes"
+        response = CloudConvert::Client.send(:get, url, query: {apikey: self.api_key})
+        return convert_response response
+    end  
+
+    private
+
+    def convert_response(response)
+      return response.response if self.return_type == :response
+      return response.parsed_response.deep_symbolize
     end
 
   end
