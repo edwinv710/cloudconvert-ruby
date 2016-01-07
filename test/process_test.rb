@@ -10,7 +10,7 @@ describe CloudConvert::Process, "VCR Process Test" do
 
   before :all do
     @process_options = {input_format: "jpg", output_format: "pdf"}
-    @client = CloudConvert::Client.new(api_key: ENVIRONMENT.API_KEY)
+    @client = CloudConvert::Client.new(api_key: "")
     @process = @client.build_process(@process_options)
   end
 
