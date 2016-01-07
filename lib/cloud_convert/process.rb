@@ -91,21 +91,9 @@ module CloudConvert
     private
 
     def send_request(opts)
-        opts[:params] ||= {}
-        request =  opts[:params]
-        if opts[:multi]
-            url = URI.parse(opts[:url])
-            req = Net::HTTP::Post::Multipart.new url.path, opts[:params]
-            http = Net::HTTP.new(url.host, url.port) 
-            http.use_ssl = (url.scheme == "https")
-            res = http.request(req)
-            request = HTTParty::Request.new(opts[:http_method], opts[:url], o = {})
-            parsed_block = lambda { HTTParty::Parser.call(res. body, HTTParty::Parser.format_from_mimetype(res['content-type']))}
-            response = HTTParty::Response.new(request, res, parsed_block)
-        else
-            response = CloudConvert::Client.send(opts[:http_method], opts[:url], query: request)
-        end
-
+        request =  opts[:params] || {}
+        args = [opts[:http_method], opts[:url], {query: request, detect_mime_type: (true if opts[:multi])}]
+        response = CloudConvert::Client.send(*args)
         yield(response) if block_given? and (response.response.code == "200" || 
             (response.parsed_response.kind_of?(Hash) and response.parsed_response.key?("step")))
         return response

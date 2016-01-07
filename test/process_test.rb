@@ -264,7 +264,7 @@ describe CloudConvert::Process, "VCR Process Test" do
       end
 
       it "should be able to download an individial file returned by the status" do
-        file_name = @status[:output][:files][0]
+        file_name = "base.min.css"
         VCR.use_cassette("download_individual_pdf_html") { @individual_file = @process.download(@path, file_name) }
         File.exist?(@individual_file).must_equal true
         @individual_file.include?(file_name).must_equal true

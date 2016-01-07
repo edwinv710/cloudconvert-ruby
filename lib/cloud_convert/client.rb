@@ -22,7 +22,7 @@ module CloudConvert
       process = CloudConvert::Process.new(opts)
       processes.push(process)
       return process
-    end  
+    end    
 
     def list
         url = "#{CloudConvert::PROTOCOL}://api.#{CloudConvert::DOMAIN}/processes"

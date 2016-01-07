@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'cloud_convert/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "cloud_convert"
+  spec.name          = "cloudconvert-ruby"
   spec.version       = CloudConvert::VERSION
   spec.authors       = ["Edwin Velasquez"]
   spec.email         = ["edwin.velasquez89@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Ruby wrapper for the Cloud Convert API"
+  spec.description   = "cloudconver-ruby is a ruby wrapper for the Cloud Convert API"
+  spec.homepage      = "http://github.com/edwinv710/cloudconver-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -36,5 +36,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake-notes"
 
   spec.add_dependency "httmultiparty", "~> 0.3.15"
-  spec.add_dependency "multipart-post"
 end

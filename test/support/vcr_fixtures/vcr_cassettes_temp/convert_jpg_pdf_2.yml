@@ -1,11 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: https://hostq3v83u.cloudconvert.com/download/TwJpvfboS3OEF80kZqUc
+    method: post
+    uri: https://hostq3v83u.cloudconvert.com/process/tEC4fXLqA5HRdoh1Iw30
     body:
-      encoding: US-ASCII
-      string: ''
+      encoding: UTF-8
+      string: input=download&outputformat=pdf&file=http%3A%2F%2Fhdwallpaperslovely.com%2Fwp-content%2Fgallery%2Froyalty-free-images-free%2Froyalty-free-stock-images-raindrops-01.jpg&download=false
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -15,8 +15,8 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
     headers:
       X-Powered-By:
       - Express
@@ -32,22 +32,24 @@ http_interactions:
       - OPTIONS, GET, PUT, POST, DELETE
       Access-Control-Allow-Headers:
       - Content-Type, Origin, User-Agent, Retry-After
+      Vary:
+      - X-HTTP-Method-Override
       X-Content-Type-Options:
       - nosniff
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '301'
+      - '286'
       Etag:
-      - W/"12d-HDPy+mVt2bPaItjo/nIDWg"
+      - W/"11e-t2pAqmlbTwtFOzEf4ipP1A"
       Date:
-      - Wed, 06 Jan 2016 02:46:16 GMT
+      - Mon, 04 Jan 2016 10:46:49 GMT
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"id":"TwJpvfboS3OEF80kZqUc","url":"//hostq3v83u.cloudconvert.com/process/TwJpvfboS3OEF80kZqUc","percent":0,"message":"Error:
-        Cannot find module ''../input/mp4.js''","step":"error","starttime":1452048368,"expire":1452050168,"input":{"type":"mp4"},"output":{},"endtime":1452048368,"minutes":0,"code":400}'
+      string: '{"id":"tEC4fXLqA5HRdoh1Iw30","url":"//hostq3v83u.cloudconvert.com/process/tEC4fXLqA5HRdoh1Iw30","percent":0,"message":"Preparing
+        process","step":"input","starttime":1451904409,"expire":1451905849,"input":{},"output":{"url":"//hostq3v83u.cloudconvert.com/download/tEC4fXLqA5HRdoh1Iw30"}}'
     http_version: 
-  recorded_at: Wed, 06 Jan 2016 02:46:53 GMT
+  recorded_at: Mon, 04 Jan 2016 10:47:26 GMT
 recorded_with: VCR 3.0.1

@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.cloudconvert.com/process
     body:
       encoding: UTF-8
-      string: apikey=&inputformat=jpg&outputformat=
+      string: apikey=7mWZZkBjRqGN224WzW4P6sXha8ic7I37CRufh5DlY04ZPxlkgn8Cw1xXAliS0QGZg80kwZWe-A6P5r8ZNmlVKg&inputformat=jpg&outputformat=
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -15,15 +15,16 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 401
-      message: 
+      code: 200
+      message: OK
     headers:
       Set-Cookie:
       - 37.187.86.144-443-cookie=R410619748; path=/
+      - CloudConvertSession=5tfvmj7k4jphh6uk7tghf5p925; path=/; domain=.cloudconvert.com
       Server:
       - nginx/1.8.0
       Date:
-      - Wed, 06 Jan 2016 02:46:48 GMT
+      - Mon, 04 Jan 2016 07:40:50 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -32,6 +33,12 @@ http_interactions:
       - keep-alive
       X-Powered-By:
       - PHP/5.5.30-1~dotdeb+7.1
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+      Pragma:
+      - no-cache
       Access-Control-Allow-Methods:
       - PUT, GET, POST, DELETE, OPTIONS
       Access-Control-Allow-Headers:
@@ -42,7 +49,8 @@ http_interactions:
       - srv07
     body:
       encoding: UTF-8
-      string: '{"error":"No API Key provided!","code":401}'
+      string: '{"url":"\/\/hostq3v83u.cloudconvert.com\/process\/lw8umORYkZsJ2QAW1era","id":"lw8umORYkZsJ2QAW1era","host":"hostq3v83u.cloudconvert.com","expires":"2016-01-04
+        20:40:50","maxsize":1024,"maxtime":1500,"concurrent":5,"minutes":25}'
     http_version: 
-  recorded_at: Wed, 06 Jan 2016 02:46:48 GMT
+  recorded_at: Mon, 04 Jan 2016 07:40:49 GMT
 recorded_with: VCR 3.0.1

@@ -20,11 +20,11 @@ http_interactions:
     headers:
       Set-Cookie:
       - 37.187.86.144-443-cookie=R410619748; path=/
-      - CloudConvertSession=5tfvmj7k4jphh6uk7tghf5p925; path=/; domain=.cloudconvert.com
+      - CloudConvertSession=v3i5n6ph15a7hu48ulvhqo8lq7; path=/; domain=.cloudconvert.com
       Server:
       - nginx/1.8.0
       Date:
-      - Mon, 04 Jan 2016 07:40:50 GMT
+      - Wed, 06 Jan 2016 02:46:45 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -49,8 +49,8 @@ http_interactions:
       - srv07
     body:
       encoding: UTF-8
-      string: '{"url":"\/\/hostq3v83u.cloudconvert.com\/process\/lw8umORYkZsJ2QAW1era","id":"lw8umORYkZsJ2QAW1era","host":"hostq3v83u.cloudconvert.com","expires":"2016-01-04
-        20:40:50","maxsize":1024,"maxtime":1500,"concurrent":5,"minutes":25}'
+      string: '{"url":"\/\/hostq3v83u.cloudconvert.com\/process\/TwJpvfboS3OEF80kZqUc","id":"TwJpvfboS3OEF80kZqUc","host":"hostq3v83u.cloudconvert.com","expires":"2016-01-06
+        15:46:45","maxsize":1024,"maxtime":1080,"concurrent":5,"minutes":18}'
     http_version: 
-  recorded_at: Mon, 04 Jan 2016 07:40:49 GMT
+  recorded_at: Wed, 06 Jan 2016 02:46:45 GMT
 recorded_with: VCR 3.0.1
