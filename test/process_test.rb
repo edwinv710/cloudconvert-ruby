@@ -109,6 +109,10 @@ describe CloudConvert::Process, "VCR Process Test" do
       it "should set the step to the step of the response" do
         @process.step.must_equal @conversion_response[:step].to_sym
       end
+
+      it "should return a key containing the key success returning true" do
+        @conversion_response[:success].must_equal true
+      end
     end
 
     describe "successful conversion by uploading a file" do

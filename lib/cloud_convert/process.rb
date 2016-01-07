@@ -136,8 +136,10 @@ module CloudConvert
     end
 
     def update_download_progress(response)
-        create_parsed_response(:status_response, response.parsed_response)
-        @step = @status_response[:step].to_sym
+        if response.parsed_response["step"]
+            create_parsed_response(:status_response, response.parsed_response)
+            @step = @status_response[:step].to_sym
+        end
         return convert_response response
     end
 
