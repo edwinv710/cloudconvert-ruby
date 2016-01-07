@@ -28,7 +28,7 @@ And then execute:
           file: "link to image",
           download: "false"
         ) if @process_response[:success]
-if @process_response[:success]
+if @conversion_response[:success]
      path = File.join(File.dirname(__FILE__), "output")
      @download = @process.download(path)
 end
