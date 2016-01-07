@@ -11,7 +11,7 @@ describe CloudConvert::Process, "VCR Process Test" do
 
   before :all do
     @process_options = {input_format: "jpg", output_format: "pdf"}
-    @client = CloudConvert::Client.new(api_key: "7mWZZkBjRqGN224WzW4P6sXha8ic7I37CRufh5DlY04ZPxlkgn8Cw1xXAliS0QGZg80kwZWe-A6P5r8ZNmlVKg")
+    @client = CloudConvert::Client.new(api_key: ENVIRONMENT.API_KEY)
     @process = @client.build_process(@process_options)
   end
 
@@ -23,32 +23,26 @@ describe CloudConvert::Process, "VCR Process Test" do
   end
 
   describe "#create" do
-    describe "the proccess creation was successful" do
-      before :all do
-        VCR.use_cassette("create_jpg_pdf") do
-          @process_response = @process.create
-        end
-      end
-      it "should return a Hash with the relevant information in the response" do
-        @process_response.kind_of?(Hash).must_equal true
-      end
-      it "should run if the step for that process is not :awaiting_creation" do
-        assert_raises CloudConvert::InvalidStep do
-          @process.create
-        end
-      end
-      it "the response should have a key called success returning true" do
-        @process_response[:success].must_equal true
+
+    it "should return a Hash with the relevant information in the response" do
+      VCR.use_cassette("create_jpg_pdf") do
+        @process.create.kind_of?(Hash).must_equal true
       end
     end
-    
 
-    
+    it "should run if the step for that process is not :awaiting_process_creation" do
+      VCR.use_cassette("create_jpg_pdf") do
+        @process.create.kind_of?(Hash).must_equal true
+      end
+      assert_raises CloudConvert::InvalidStep do
+        @process.create
+      end
+    end
 
     it "should not change the step if the argument passed are incomplete" do
          @process.client.instance_variable_set("@api_key", "")
          VCR.use_cassette("create_jpg_pdf_error") { @process.create }
-         @process.step.must_equal :awaiting_creation
+         @process.step.must_equal :awaiting_process_creation
     end
 
     it "should return error code 401 if an api key was not provided" do
@@ -108,10 +102,6 @@ describe CloudConvert::Process, "VCR Process Test" do
 
       it "should set the step to the step of the response" do
         @process.step.must_equal @conversion_response[:step].to_sym
-      end
-
-      it "should return a key containing the key success returning true" do
-        @conversion_response[:success].must_equal true
       end
     end
 
@@ -274,10 +264,10 @@ describe CloudConvert::Process, "VCR Process Test" do
       end
 
       it "should be able to download an individial file returned by the status" do
-        file_name = "base.min.css"
-        VCR.use_cassette("download_individual_pdf_html") { @individual_file = @process.download(@path, file_name) }
-        File.exist?(@individual_file).must_equal true
-        @individual_file.include?(file_name).must_equal true
+        file_name = @status[:output][:files][0]
+        VCR.use_cassette("download_individual_pdf_html") { individial_file = @process.download(@path, file_name) }
+        File.exist?(individial_file).must_equal true
+        individual_file.include?(file_name).must_equal true
 
       end
     end
