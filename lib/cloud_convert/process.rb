@@ -18,12 +18,12 @@ module CloudConvert
     def initialize(args = {})
       @input_format = args[:input_format]
       @output_format = args[:output_format]
-      @step = :awaiting_process_creation
+      @step = :awaiting_creation
       @client = args[:client]
     end
 
     def create
-        raise CloudConvert::InvalidStep unless @step == :awaiting_process_creation
+        raise CloudConvert::InvalidStep unless @step == :awaiting_creation
         url = construct_url("api", "process")
         response = send_request(http_method: :post, 
                                 url: url, 
@@ -33,6 +33,7 @@ module CloudConvert
                                     "outputformat" => @outputformat
                                 }) do | response|
             @step = :awaiting_conversion
+            response.parsed_response[:success] = true
             create_parsed_response(:process_response, response.parsed_response)
             @process_response[:subdomain] = extract_subdomain_from_url(@process_response[:url])
         end
@@ -40,13 +41,14 @@ module CloudConvert
     end
 
     def convert(opts)
-        raise CloudConvert::InvalidStep if @step == :awaiting_process_creation
+        raise CloudConvert::InvalidStep if @step == :awaiting_creation
         url = process_url(include_process_id: true)
         multi = opts[:file].respond_to?("read")
         response = send_request(http_method: :post, 
                                 url: url, 
                                 params: opts,
                                 multi: multi) do |response|
+            response.parsed_response[:success] = true
             create_parsed_response(:conversion_response, response.parsed_response)
             @step = @conversion_response[:step].to_sym
         end

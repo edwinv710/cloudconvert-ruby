@@ -23,26 +23,32 @@ describe CloudConvert::Process, "VCR Process Test" do
   end
 
   describe "#create" do
-
-    it "should return a Hash with the relevant information in the response" do
-      VCR.use_cassette("create_jpg_pdf") do
-        @process.create.kind_of?(Hash).must_equal true
+    describe "the proccess creation was successful" do
+      before :all do
+        VCR.use_cassette("create_jpg_pdf") do
+          @process_response = @process.create
+        end
+      end
+      it "should return a Hash with the relevant information in the response" do
+        @process_response.kind_of?(Hash).must_equal true
+      end
+      it "should run if the step for that process is not :awaiting_creation" do
+        assert_raises CloudConvert::InvalidStep do
+          @process.create
+        end
+      end
+      it "the response should have a key called success returning true" do
+        @process_response[:success].must_equal true
       end
     end
+    
 
-    it "should run if the step for that process is not :awaiting_process_creation" do
-      VCR.use_cassette("create_jpg_pdf") do
-        @process.create.kind_of?(Hash).must_equal true
-      end
-      assert_raises CloudConvert::InvalidStep do
-        @process.create
-      end
-    end
+    
 
     it "should not change the step if the argument passed are incomplete" do
          @process.client.instance_variable_set("@api_key", "")
          VCR.use_cassette("create_jpg_pdf_error") { @process.create }
-         @process.step.must_equal :awaiting_process_creation
+         @process.step.must_equal :awaiting_creation
     end
 
     it "should return error code 401 if an api key was not provided" do
