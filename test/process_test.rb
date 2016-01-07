@@ -1,5 +1,4 @@
 require 'test_helper'
-
 require 'vcr'
 
 VCR.configure do |config|
