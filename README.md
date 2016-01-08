@@ -1,6 +1,6 @@
 # CloudConvert-Ruby
 
-CloudConvert-Ruby is a ruby wrapper for the [Cloud Convert](https://www.google.com) api. It takes an object oriented approach to using the API, allowing you to quickly execute and access your conversions.
+CloudConvert-Ruby is a ruby wrapper for the [Cloud Convert](https://cloudconvert.com/) api. It takes an object oriented approach to using the API, allowing you to quickly execute and access your conversions.
 
 This gem is in its very early stage and is updated as the need arises for a new feature. I would appreciate any comments or suggestions.
 
