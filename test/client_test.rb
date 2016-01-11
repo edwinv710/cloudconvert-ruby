@@ -11,7 +11,7 @@ class ClientTest < Minitest::Test
 
   def setup
     @client_without_processes = CloudConvert::Client.new(api_key: "api_key")
-    @client = CloudConvert::Client.new(api_key: "7mWZZkBjRqGN224WzW4P6sXha8ic7I37CRufh5DlY04ZPxlkgn8Cw1xXAliS0QGZg80kwZWe-A6P5r8ZNmlVKg")
+    @client = CloudConvert::Client.new(api_key: "")
     @process = @client.build_process(input_format: "jpg", output_format: "pdf")
   end
 

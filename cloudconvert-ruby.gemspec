@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Ruby wrapper for the Cloud Convert API"
   spec.description   = "cloudconver-ruby is a ruby wrapper for the Cloud Convert API"
-  spec.homepage      = "http://github.com/edwinv710/cloudconvert-ruby"
+  spec.homepage      = "http://github.com/edwinv710/cloudconvert-ruby/"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or

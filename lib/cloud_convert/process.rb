@@ -56,6 +56,7 @@ module CloudConvert
     end
 
     def status
+        raise CloudConvert::InvalidStep if @step == :awaiting_creation
         url = process_url(include_process_id: true)
         response = send_request(http_method: :get,
                                 url: url) do |response|
@@ -66,6 +67,7 @@ module CloudConvert
     end
 
     def download(path, file_name="")    
+        raise CloudConvert::InvalidStep if @step == :awaiting_creation
         response =  HTTMultiParty.get(download_url(file_name))
         return update_download_progress response unless response.response.code == "200"
         file_name = response.response.header['content-disposition'][/filename=(\"?)(.+)\1/, 2] if file_name.strip.empty?
@@ -78,6 +80,7 @@ module CloudConvert
     end
 
     def delete
+        raise CloudConvert::InvalidStep if @step == :awaiting_creation
         url = construct_url(process_response[:subdomain], "process", process_response[:id])
         response = HTTMultiParty.delete(url)
         @step = :deleted if response.response.code == "200"
@@ -85,6 +88,7 @@ module CloudConvert
     end
 
     def download_url(file = "")
+        raise CloudConvert::InvalidStep if @step == :awaiting_creation
         file = "/#{file}" unless file.nil? or file.strip.empty?
         return "https://#{@process_response[:subdomain]}.cloudconvert.com/download/#{@process_response[:id]}#{file}"
     end
