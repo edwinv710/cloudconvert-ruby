@@ -42,7 +42,7 @@ module CloudConvert
     # Returns an array of hash with the results from the Cloud Convert list endpoint.
     def list
         url = "#{CloudConvert::PROTOCOL}://api.#{CloudConvert::DOMAIN}/processes"
-        response = CloudConvert::Client.send(:get, url, query: {apikey: self.api_key})
+        response = CloudConvert::Client.send(:get, url, {query: {apikey: self.api_key}})
         return convert_response response
     end  
 
