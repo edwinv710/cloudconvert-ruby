@@ -10,8 +10,8 @@ end
 describe CloudConvert::Process, "VCR Process Test" do
 
   before :all do
-    @process_options = {input_format: "jpg", output_format: "pdf"}
-    @client = CloudConvert::Client.new(api_key: "")
+    @process_options = {input_format: :jpg, output_format: :pdf}
+    @client = CloudConvert::Client.new(api_key: "C54KhRYee6KIQAP2zdEZRwVZAdn1kVnLvp5ZIweU8s17pmHjCHTQxmZ4JZg3L_7zlU3YpMWhyGyaKTJ5lZ84AQ")
     @process = @client.build_process(@process_options)
   end
 
@@ -90,7 +90,7 @@ describe CloudConvert::Process, "VCR Process Test" do
       it "should raise a CloudConvert::InvalidStep" do
         assert_raises CloudConvert::InvalidStep do
           @process.convert({
-            input: "mp4",
+            input: :mp4,
             file: "blah",
             download: "false"
           })
@@ -104,7 +104,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("convert_jpg_pdf") do
           @conversion_response = @process.convert(
             input: "download",
-            outputformat: "pdf", 
+            outputformat: :pdf, 
             file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
             download: "false"
           )
@@ -135,7 +135,7 @@ describe CloudConvert::Process, "VCR Process Test" do
             upload_file = UploadIO.new(file, "image/jpeg", "raindrops-01.jpg")
             @conversion_response = @process.convert(
               input: "upload",
-              outputformat: "pdf", 
+              outputformat: :pdf, 
               file: upload_file,
               download: "false"
             )
@@ -166,7 +166,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("convert_jpg_pdf") do
           @conversion_response = @process.convert(
             input: "download",
-            outputformat: "pdf", 
+            outputformat: :pdf, 
             file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
             download: "false"
           )
@@ -186,7 +186,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("create_jpg_pdf_conversion_error") { @process.create }
         VCR.use_cassette("convert_jpg_pdf_conversion_error") do
           @process.convert({
-            input: "mp4",
+            input: :mp4,
             file: "blah",
             download: "false"
           })
@@ -222,7 +222,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("convert_jpg_pdf") do
           @conversion_response = @process.convert(
             input: "download",
-            outputformat: "pdf", 
+            outputformat: :pdf, 
             file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
             download: "false"
           )
@@ -247,7 +247,7 @@ describe CloudConvert::Process, "VCR Process Test" do
             upload_file = UploadIO.new(file, "image/jpeg", "raindrops-01.jpg")
             @conversion_response = @process.convert(
               input: "upload",
-              outputformat: "pdf", 
+              outputformat: :pdf, 
               file: upload_file,
               download: "false"
             )
@@ -267,14 +267,14 @@ describe CloudConvert::Process, "VCR Process Test" do
 
     describe "when a conversion was successful and produced multiple output files" do
       before :all do
-        @process_options = {input_format: "pdf", output_format: "html"}
+        @process_options = {input_format: :pdf, output_format: :html}
         @process = @client.build_process(@process_options)
         @path = File.join(File.dirname(__FILE__), "output")
         VCR.use_cassette("create_pdf_html") { @process.create }
         VCR.use_cassette("convert_pdf_html") do
           @conversion_response = @process.convert(
             input: "download",
-            outputformat: "html", 
+            outputformat: :html, 
             file: "http://www.digilife.be/quickreferences/qrc/ruby%20language%20quickref.pdf",
             download: "false",
             save: "true",
@@ -311,7 +311,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("create_jpg_pdf_conversion_error") { @process.create }
         VCR.use_cassette("convert_jpg_pdf_conversion_error") do
           @process.convert({
-            input: "mp4",
+            input: :mp4,
             file: "blah",
             download: "false"
           })
@@ -352,7 +352,7 @@ describe CloudConvert::Process, "VCR Process Test" do
         VCR.use_cassette("convert_jpg_pdf") do
           @conversion_response = @process.convert(
             input: "download",
-            outputformat: "pdf", 
+            outputformat: :pdf, 
             file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
             download: "false"
           )
@@ -380,13 +380,13 @@ describe CloudConvert::Process, "VCR Process Test" do
 
   describe "#input_format" do
     it "should return the string 'jpg'" do
-      @process.input_format.must_equal "jpg"  
+      @process.input_format.must_equal :jpg  
     end
   end
 
   describe "#output_format" do
     it "should return the string 'pdf'" do
-      @process.output_format.must_equal "pdf"  
+      @process.output_format.must_equal :pdf  
     end
   end
 
@@ -397,7 +397,7 @@ describe CloudConvert::Process, "VCR Process Test" do
       VCR.use_cassette("convert_jpg_pdf") do
         @conversion_response = @process.convert(
           input: "download",
-          outputformat: "pdf", 
+          outputformat: :pdf, 
           file: "http://hdwallpaperslovely.com/wp-content/gallery/royalty-free-images-free/royalty-free-stock-images-raindrops-01.jpg",
           download: "false"
         )
