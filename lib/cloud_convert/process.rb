@@ -30,7 +30,7 @@ module CloudConvert
                                 params: {
                                     "apikey" => @client.api_key,
                                     "inputformat" => @input_format,
-                                    "outputformat" => @outputformat
+                                    "outputformat" => @output_format
                                 }) do | response|
             @step = :awaiting_conversion
             response.parsed_response[:success] = true
