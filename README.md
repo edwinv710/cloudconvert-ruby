@@ -20,12 +20,12 @@ And then execute:
 
 ```ruby
 @client = CloudConvert::Client.new(api_key: "Your API Key")
-@process = @client.build_process(input_format: "jpg", output_format: "pdf")
+@process = @client.build_process(input_format: :jpg, output_format: :pdf)
 @process_response = @process.create
 if @process_response[:success]
     @conversion_response = @process.convert(
         input: "download",
-        outputformat: "pdf",
+        outputformat: :pdf,
         file: "link to image",
         download: "false"
     )
@@ -48,7 +48,7 @@ Once the client object is created, we can build a process for our conversion. In
 Note: You can build as many processes as you want, just make sure that you are aware of any limitations placed on your account by Cloud Convert before you start converting files.
 
 ```ruby
-@process = @client.build_process(input_format: "jpg", output_format: "pdf")
+@process = @client.build_process(input_format: :jpg, output_format: :pdf)
 ```
 
 We now need to tell Cloud Convert that we are creating a process. To do this, we will use the `create` method.
@@ -66,7 +66,7 @@ To start a conversion, you can execute the `convert` method. For all the paramet
 ```ruby
 @conversion_response = @process.convert(
           input: "download",
-          outputformat: "pdf",
+          outputformat: :pdf,
           file: "link to image",
           download: "false"
         )
