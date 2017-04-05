@@ -1,4 +1,4 @@
 module CloudConvert
-   class InvalidStep < Exception
+   class InvalidStep < StandardError
    end
 end
