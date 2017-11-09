@@ -25,14 +25,20 @@ module CloudConvert
     def create mode = 'convert'
         raise CloudConvert::InvalidStep unless @step == :awaiting_creation
         url = construct_url("api", "process")
+
+        params = { "apikey" => @client.api_key,
+                           "inputformat" => @input_format,
+                           "outputformat" => @output_format,
+                           "mode" => mode }
+
+        if mode == 'info'
+            params.delete(:outputformat)
+            params.merge!(wait: true, download: false)
+        end
+
         response = send_request(http_method: :post,
                                 url: url,
-                                params: {
-                                    "apikey" => @client.api_key,
-                                    "inputformat" => @input_format,
-                                    "outputformat" => @output_format,
-                                    "mode" => mode
-                                }) do | response|
+                                params: params) do | response|
             @step = :awaiting_conversion
             response.parsed_response[:success] = true
             create_parsed_response(:process_response, response.parsed_response)
