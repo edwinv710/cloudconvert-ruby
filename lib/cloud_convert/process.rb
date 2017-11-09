@@ -22,15 +22,16 @@ module CloudConvert
       @client = args[:client]
     end
 
-    def create
+    def create mode = 'convert'
         raise CloudConvert::InvalidStep unless @step == :awaiting_creation
         url = construct_url("api", "process")
-        response = send_request(http_method: :post, 
-                                url: url, 
+        response = send_request(http_method: :post,
+                                url: url,
                                 params: {
                                     "apikey" => @client.api_key,
                                     "inputformat" => @input_format,
-                                    "outputformat" => @output_format
+                                    "outputformat" => @output_format,
+                                    "mode" => mode
                                 }) do | response|
             @step = :awaiting_conversion
             response.parsed_response[:success] = true
@@ -44,8 +45,8 @@ module CloudConvert
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
         url = process_url(include_process_id: true)
         multi = opts[:file].respond_to?("read")
-        response = send_request(http_method: :post, 
-                                url: url, 
+        response = send_request(http_method: :post,
+                                url: url,
                                 params: opts,
                                 multi: multi) do |response|
             response.parsed_response[:success] = true
@@ -66,13 +67,13 @@ module CloudConvert
         return convert_response response
     end
 
-    def download(path, file_name="")    
+    def download(path, file_name="")
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
         response =  HTTMultiParty.get(download_url(file_name))
         return update_download_progress response unless response.response.code == "200"
         file_name = response.response.header['content-disposition'][/filename=(\"?)(.+)\1/, 2] if file_name.strip.empty?
         full_path = full_path(path, file_name)
-        return full_path.open("w") do |f| 
+        return full_path.open("w") do |f|
             f.binmode
             f.write response.parsed_response
             full_path.to_s
@@ -93,14 +94,14 @@ module CloudConvert
         return "https://#{@process_response[:subdomain]}.cloudconvert.com/download/#{@process_response[:id]}#{file}"
     end
 
-    
+
     private
 
     def send_request(opts)
         request =  opts[:params] || {}
         args = [opts[:http_method], opts[:url], {query: request, detect_mime_type: (true if opts[:multi])}]
         response = CloudConvert::Client.send(*args)
-        yield(response) if block_given? and (response.response.code == "200" || 
+        yield(response) if block_given? and (response.response.code == "200" ||
             (response.parsed_response.kind_of?(Hash) and response.parsed_response.key?("step")))
         return response
     end
