@@ -122,7 +122,7 @@ module CloudConvert
     end
 
     def extract_subdomain_from_url(url)
-        return url.split(".")[0].tr('/','')
+        return url.scan(/[^\/]*(?=\.#{CloudConvert::DOMAIN})/).first
     end
 
     def convert_response(response)

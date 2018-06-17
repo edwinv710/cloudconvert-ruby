@@ -10,5 +10,5 @@ require "cloud_convert/lib/deep_symbolize"
 module CloudConvert
   # Your code goes here...
   PROTOCOL = "https"
-  DOMAIN = "infra.cloudconvert.com"
+  DOMAIN = "cloudconvert.com"
 end
