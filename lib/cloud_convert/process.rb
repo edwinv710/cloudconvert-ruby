@@ -24,7 +24,7 @@ module CloudConvert
 
     def create
         raise CloudConvert::InvalidStep unless @step == :awaiting_creation
-        url = construct_url("api", "process")
+        url = construct_url("process")
         response = send_request(http_method: :post, 
                                 url: url, 
                                 params: {
@@ -35,14 +35,13 @@ module CloudConvert
             @step = :awaiting_conversion
             response.parsed_response[:success] = true
             create_parsed_response(:process_response, response.parsed_response)
-            @process_response[:subdomain] = extract_subdomain_from_url(@process_response[:url])
         end
         return convert_response response
     end
 
     def convert(opts)
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
-        url = process_url(include_process_id: true)
+        url = process_url()
         multi = opts[:file].respond_to?("read")
         response = send_request(http_method: :post, 
                                 url: url, 
@@ -57,7 +56,7 @@ module CloudConvert
 
     def status
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
-        url = process_url(include_process_id: true)
+        url = process_url()
         response = send_request(http_method: :get,
                                 url: url) do |response|
             create_parsed_response(:status_response, response.parsed_response)
@@ -90,7 +89,7 @@ module CloudConvert
     def download_url(file = "")
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
         file = "/#{file}" unless file.nil? or file.strip.empty?
-        return "https://#{@process_response[:subdomain]}.cloudconvert.com/download/#{@process_response[:id]}#{file}"
+        return "#{CloudConvert::PROTOCOL}:#{@conversion_response[:output][:url]}#{file}"
     end
 
     
@@ -105,14 +104,13 @@ module CloudConvert
         return response
     end
 
-    def construct_url(subdomain, action, id="")
-        id = "/#{id}" if id.length > 0
-        return "#{CloudConvert::PROTOCOL}://#{subdomain}.#{CloudConvert::DOMAIN}/#{action}#{id}"
+    def construct_url(action, id="")
+      id = "/#{id}" if id.length > 0
+      return "#{CloudConvert::PROTOCOL}://#{CloudConvert::API_DOMAIN}/#{action}#{id}"
     end
 
-    def process_url(opts = {})
-        action = (opts[:include_process_id] ? "process/#{@process_response[:id]}" : "process")
-        return construct_url(@process_response[:subdomain], action)
+    def process_url()
+        return "#{CloudConvert::PROTOCOL}:#{@process_response[:url]}"
     end
 
 
@@ -121,9 +119,6 @@ module CloudConvert
         return self.instance_variable_set("@#{variable_symbol.to_s}", symbolized_response)
     end
 
-    def extract_subdomain_from_url(url)
-        return url.split(".")[0].tr('/','')
-    end
 
     def convert_response(response)
         case @client.return_type
