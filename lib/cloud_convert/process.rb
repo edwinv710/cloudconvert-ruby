@@ -42,14 +42,27 @@ module CloudConvert
     def convert(opts)
         raise CloudConvert::InvalidStep if @step == :awaiting_creation
         url = process_url()
-        multi = opts[:file].respond_to?("read")
+        if opts[:file].respond_to?("read")
+          file_to_upload = opts[:file]
+          opts.delete(:file)
+        end
         response = send_request(http_method: :post, 
                                 url: url, 
                                 params: opts,
-                                multi: multi) do |response|
+                                multi: false) do |response|
             response.parsed_response[:success] = true
             create_parsed_response(:conversion_response, response.parsed_response)
             @step = @conversion_response[:step].to_sym
+
+            if(file_to_upload)
+              send_request(http_method: :post,
+                           url: "#{CloudConvert::PROTOCOL}:#{@conversion_response[:upload][:url]}",
+                           params: {
+                               "file": file_to_upload
+                           },
+                           multi: true)
+            end
+
         end
         return convert_response response
     end
