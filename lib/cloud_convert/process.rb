@@ -11,7 +11,8 @@ module CloudConvert
                 :conversion_response,
                 :status_response,
                 :download_url,
-                :step
+                :step,
+                :mode
 
 
 
@@ -19,18 +20,20 @@ module CloudConvert
       @input_format = args[:input_format]
       @output_format = args[:output_format]
       @step = :awaiting_creation
+      @mode = args[:mode] || 'convert'
       @client = args[:client]
     end
 
     def create
         raise CloudConvert::InvalidStep unless @step == :awaiting_creation
         url = construct_url("process")
-        response = send_request(http_method: :post, 
-                                url: url, 
+        response = send_request(http_method: :post,
+                                url: url,
                                 params: {
                                     "apikey" => @client.api_key,
                                     "inputformat" => @input_format,
-                                    "outputformat" => @output_format
+                                    "outputformat" => @output_format,
+                                    "mode" => @mode,
                                 }) do | response|
             @step = :awaiting_conversion
             response.parsed_response[:success] = true
